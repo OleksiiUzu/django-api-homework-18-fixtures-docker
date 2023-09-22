@@ -21,8 +21,8 @@ import blog, user, animals, main
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('main/', include('main.urls')),
+    path('', include('main.urls')),
     path('blog/', include('blog.urls')),
     path('animals/', include('animals.urls')),
-    path('', include('user.urls')),
+    path('user/', include('user.urls')),
 ]

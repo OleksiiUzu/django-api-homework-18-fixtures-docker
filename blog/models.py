@@ -11,7 +11,7 @@ class Tag(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length=100)
-    tag = models.CharField(max_length=100)
+    content = models.CharField(max_length=100)
     image = models.ImageField(upload_to='blog/images')
     tag_id = models.ForeignKey(Tag, on_delete=models.CASCADE)
 

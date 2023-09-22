@@ -8,6 +8,19 @@
     <title>Document</title>
 </head>
 <body>
-    {{ result }}
+    <form method="get">
+        <label for="sort_by">Sort By : </label>
+        <select id="sort_by" name="sort_by">
+            <option value="">All</option>
+                <option value="name" name="name">name</option>
+                <option value="animal_type" name="animal_type">animal_type</option>
+                <option value="age" name="age">age</option>
+                <option value="breed" name="breed">breed</option>
+                <option value="availability" name="availability">availability</option>
+                <option value="healthy" name="healthy">healthy</option>
+                <option value="sex" name="sex">sex</option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
 </body>
 </html>

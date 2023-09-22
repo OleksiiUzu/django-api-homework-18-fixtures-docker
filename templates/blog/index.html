@@ -8,6 +8,14 @@
     <title>Document</title>
 </head>
 <body>
-    {{ result }}
+<a href="/blog/feedback">Feedback</a>
+    {% for pos in result %}
+        <p>Title: {{ pos.title }}</p>
+        <p>Content: {{ pos.content }}</p>
+        <p>Tag: {{ pos.tag_id_id }}</p>
+        <a href="/blog/{{ pos.id }}">Read More</a>
+        <br>
+    {% endfor %}
+
 </body>
 </html>

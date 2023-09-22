@@ -8,6 +8,37 @@
     <title>Document</title>
 </head>
 <body>
-
+    <form method="post" action="/animals/search">
+        {% csrf_token %}
+        <input type="text" name="search">
+        <input type="submit" name="Submit">
+    </form>
+    <form method="get">
+        <label for="sort_by">Sort By : </label>
+        <select id="sort_by" name="sort_by">
+            <option value="">All</option>
+            <option value="name" name="name">name</option>
+            <option value="animal_type" name="animal_type">animal_type</option>
+            <option value="age" name="age">age</option>
+            <option value="breed" name="breed">breed</option>
+            <option value="availability" name="availability">availability</option>
+            <option value="healthy" name="healthy">healthy</option>
+            <option value="sex" name="sex">sex</option>
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+    {% for animal in animals %}
+        <p>Name: {{ animal.name }}</p>
+        <p>Type: {{ animal.animal_type }}</p>
+        <p>Age: {{ animal.age }}</p>
+        <p>Breed: {{ animal.breed }}</p>
+        <p>Availability: {{ animal.availability }}</p>
+        <p>Description: {{ animal.description }}</p>
+        <p>Health: {{ animal.healthy }}</p>
+        <p>Sex: {{ animal.sex }}</p>
+        <a href="/animals/animal_id={{ animal.id }}">More Info</a>
+        ----------------------------------
+    {% endfor %}
+    <br>
 </body>
 </html>

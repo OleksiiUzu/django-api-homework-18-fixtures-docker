@@ -1,13 +1,55 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+    <form method="get">
+        <label for="animal_type">Sort By Animal Type: </label>
+        <select id="animal_type" name="animal_type">
+            <option value="">All</option>
+            {% for animal in animals %}
+                <option value="{{ animal }}" name="{{ animal }}">{{ animal }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+        <br>
+        <form method="post">
+            {% csrf_token %}
+            <label >Place your feedback: </label>
+            <br>
+            <input type="text" name="title" placeholder="title">
+            <br>
+            <input type="text" name="Text" placeholder="text">
+            <br>
+            <input type="text" name="media" placeholder="media">
+            <br>
+            <input type="number" name="user" placeholder="user">
+            <br>
+            <select id="animal_type" name="animal_type">
+                {% for animal in all_animals %}
+                    <option value="{{ animal.id }}" name="{{ animal }}">{{ animal.name }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+        {% for data in feedback %}
+            <h1>{{ data.title }}</h1>
+            <p>{{ data.text }}</p>
+            <p>{{ data.media }}</p>
+            <p>{{ data.user }}</p>
+            <h2>{{ data.animal.name }}</h2>
+            <p>{{ data.animal.breed }}</p>
+            <p>{{ data.animal.description }}</p>
+            <a href="/blog/{{ data.animal.id }}">Read More About {{ data.animal.name }}</a>
+            <h3>-------------------------------------------------</h3>
+        {% endfor %}
+        <br>
+    </body>
 </html>

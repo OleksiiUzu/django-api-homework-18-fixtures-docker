@@ -1,23 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from animals.models import Animal
 
 
 def animals(request):
-    return render(request, 'animals/animals.html', {})
+    data = request.GET
+    all_animals = Animal.objects.all()
+    if data:
+        if data['sort_by']:
+            all_animals = all_animals.all().filter().order_by(data['sort_by'])
+    result = all_animals
+    return render(request, 'animals/animals.html', {'animals': result})
 
 
 def animal(request, animal_id):
-    result = animal_id
-    print(result)
-    return render(request, 'animals/animal.html', {'result': result})
-
-
-def animal_sort(request, sort_by):
-    result = sort_by
-    return render(request, 'animals/sort_animal.html', {'result': result})
+    animal_data = Animal.objects.get(id=animal_id)
+    return render(request, 'animals/animal.html', {'result': animal_data})
 
 
 def search(request):
-    return render(request, 'animals/search.html', {})
+    if request.method == 'POST':
+        data = request.POST
+        data_animal = Animal.objects.get(name=data['search'])
+        return render(request, 'animals/search.html', {'result': data_animal})
 
 
 def schedule(request, animal_id):

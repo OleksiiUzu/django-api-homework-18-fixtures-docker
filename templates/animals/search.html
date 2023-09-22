@@ -8,6 +8,8 @@
     <title>Document</title>
 </head>
 <body>
-    Search
+    <p>Name: {{ result.name }}</p>
+    <p>Type: {{ result.animal_type }}</p>
+    <a href="/animals/animal_id={{ result.id }}">Read More About {{ result.name }}</a>
 </body>
 </html>
