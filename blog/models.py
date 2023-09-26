@@ -1,4 +1,6 @@
+import datetime
 from django.db import models
+from django.contrib.auth.models import User
 import animals.models
 
 
@@ -23,8 +25,9 @@ class Feedback(models.Model):
     title = models.CharField(max_length=100)
     text = models.TextField(max_length=500)
     media = models.CharField(max_length=100)
-    user = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     animal = models.ForeignKey(animals.models.Animal, on_delete=models.CASCADE)
+    date = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
 
     def __str__(self):
         return self.title

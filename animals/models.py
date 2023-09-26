@@ -32,7 +32,7 @@ class AnimalMedia(models.Model):
 
 
 class Schedule(models.Model):
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField('Y% M% d%')
+    end_time = models.DateTimeField('Y% M% d%')
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE)
     user = models.IntegerField()

@@ -8,6 +8,7 @@
         <title>Document</title>
     </head>
     <body>
+    <a href="/blog">Blog</a>
     <form method="get">
         <label for="animal_type">Sort By Animal Type: </label>
         <select id="animal_type" name="animal_type">
@@ -22,15 +23,7 @@
         <form method="post">
             {% csrf_token %}
             <label >Place your feedback: </label>
-            <br>
-            <input type="text" name="title" placeholder="title">
-            <br>
-            <input type="text" name="Text" placeholder="text">
-            <br>
-            <input type="text" name="media" placeholder="media">
-            <br>
-            <input type="number" name="user" placeholder="user">
-            <br>
+            {{ feedback_form }}
             <select id="animal_type" name="animal_type">
                 {% for animal in all_animals %}
                     <option value="{{ animal.id }}" name="{{ animal }}">{{ animal.name }}</option>
@@ -47,7 +40,8 @@
             <h2>{{ data.animal.name }}</h2>
             <p>{{ data.animal.breed }}</p>
             <p>{{ data.animal.description }}</p>
-            <a href="/blog/{{ data.animal.id }}">Read More About {{ data.animal.name }}</a>
+            <p>{{ data.date }}</p>
+            <a href="/animals/animal_id={{ data.animal.id }}">Read More About {{ data.animal.name }}</a>
             <h3>-------------------------------------------------</h3>
         {% endfor %}
         <br>

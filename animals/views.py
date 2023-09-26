@@ -1,5 +1,8 @@
+import datetime
+
 from django.shortcuts import render, redirect
-from animals.models import Animal
+from animals.models import Animal, Schedule
+from animals.schedule_calculations import time_to_visit
 
 
 def animals(request):
@@ -14,7 +17,29 @@ def animals(request):
 
 def animal(request, animal_id):
     animal_data = Animal.objects.get(id=animal_id)
-    return render(request, 'animals/animal.html', {'result': animal_data})
+    '''start_time = datetime.datetime(2023, 1, 1, 12, 0)  # Припустимо, що це ваша дата та час початку
+    end_time = datetime.datetime(2023, 1, 2, 13, 0)  # Припустимо, що це ваша дата та час закінчення
+
+    new_schedule = Schedule(
+        start_time=start_time,
+        end_time=end_time,
+        animal_id=2,  # ID тварини, до якої відноситься розклад
+        user=request.user.id,
+    )
+    new_schedule.save()'''
+    date_main = []
+    schedule_time = Schedule.objects.all().filter(animal_id=animal_id)
+    for item in schedule_time:
+        date_list = [item.start_time, item.end_time]
+        date_main.append(date_list)
+    print(date_main)
+    if not date_main:
+        date_main = False
+    if request.method == 'POST':
+        times = time_to_visit(date_main, request.POST['val'][0])
+        print(times)
+        return render(request, 'animals/schedule.html', {'res': times})
+    return render(request, 'animals/animal.html', {'result': animal_data, 'reserved_time': date_main})
 
 
 def search(request):

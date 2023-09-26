@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 import blog.models
 import animals.models
+import blog.forms
 
 
 def index(request):
@@ -17,12 +18,18 @@ def feedback(request):
     if request.method == 'POST':
         data = request.POST
         print(data)
-        new_feedback = blog.models.Feedback(title=data['title'],
+        '''new_feedback = blog.models.Feedback(title=data['title'],
                                             text=data['Text'],
                                             media=data['media'],
-                                            user=int(data['user']),
+                                            user=request.user,
                                             animal_id=int(data['animal_type']))
-        new_feedback.save()
+        new_feedback.save()'''
+        form = blog.forms.FeedbackForm(request.POST)
+        feedback_data = form.save(commit=False)
+        animal = animals.models.Animal.objects.get(id=int(data['animal_type']))
+        feedback_data.user = request.user
+        feedback_data.animal = animal
+        feedback_data.save()
         return redirect('/blog/feedback')
     all_feedback = blog.models.Feedback.objects.all()
     all_animals_data = animals.models.Animal.objects.all()
@@ -36,4 +43,5 @@ def feedback(request):
     results = all_feedback.all()
     return render(request, 'blog/feedback.html', {'feedback': results,
                                                   'animals': set(animals_type),
-                                                  'all_animals': all_animals_data})
+                                                  'all_animals': all_animals_data,
+                                                  'feedback_form': blog.forms.FeedbackForm()})
