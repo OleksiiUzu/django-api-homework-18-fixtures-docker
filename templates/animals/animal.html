@@ -30,7 +30,7 @@
     <p>No reserved time</p>
     {% endif %}
     <p>Reserve your time:</p>
-    <form method="post">
+    <form method="post" action="/animals/animal_id={{ result.id }}/schedule">
         {% csrf_token %}
         <input type="number" name="val">
         <input type="submit" name="submit">

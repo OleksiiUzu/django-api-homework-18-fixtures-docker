@@ -1,56 +1,66 @@
+from datetime import timedelta
 import datetime
-import re
 
 
-# creates a list from "08:00" to "18:00"
-def time_check():
-    time_range_list = []
-    for hour in range(8, 18):
-        for minute in range(0, 60, 15):
-            _time = f'{hour}:{minute}'
-            time_range_list.append(_time)
-    time_range_list.append('18:0')
-    print(time_range_list)
-    return time_range_list
+class TimeRange:
+    def __init__(self, start_time, end_time):
+        self.start_time = start_time
+        self.end_time = end_time
+
+    def intersects(self, other_ranges):
+        for other_range in other_ranges:
+
+            start_time_other, end_time_other = other_range
+            if (
+                    (self.start_time <= start_time_other <= self.end_time) or
+                    (self.start_time <= end_time_other <= self.end_time) or
+                    (start_time_other <= self.start_time <= end_time_other)
+            ):
+                return True
+
+        return False
 
 
-def time_to_visit(some_list: list, time_visit: int):
-    print(some_list)
-    # тут видаляє весь час яки заброньований з основного листа
-    t = time_check()
-    if some_list:
-        for i in some_list:
-            start = f'{i[0].hour}:{i[0].minute}'
-            end = f'{i[1].hour}:{i[1].minute}'
-            print('start: ', start)
-            print('end: ', end)
-            index_start = t.index(start)
-            index_end = t.index(end)+1
-            del_data = t[index_start: index_end]
-            for j in del_data:
-                t.pop(t.index(j))
+def time_to_visit(duration, booked_times):
+    opening_time = datetime.datetime(2023, 8, 1, 8, 0)
+    closing_time = datetime.datetime(2023, 8, 1, 18, 0)
 
-    pattern = r'(([0-9]|[0-2][0-3]|1[0-9]|0[0-9]):([0-5][0-9]|[0-9]))'
-    new_lst = []
-    for i in t:
-        # тут магія
-        # я використав регулярку щоб просто достукатися до години в нашому часі(8:0 - 8)
-        # потім я додаю у, яка відповідає за час відвідування и створюю таке (у=1, до 8:0, після 9:0 )
-        # якщо такий час є то додає 8:0 до листу який ми повернемо в кінці
-        correct_time = re.findall(pattern, str(i))
-        current = correct_time[0][1]
-        next_hour = int(correct_time[0][1]) + int(time_visit)
-        j = i.replace(current, str(next_hour))
-        if j in t:
-            new_lst.append(i)
-    print(new_lst)
-    return new_lst
+    main = []
+    current_time = opening_time
+
+    modified_booked_times = []
+    if booked_times:
+        for i in booked_times:
+            start_time = i[0] + timedelta(minutes=1)
+            end_time = i[1] - timedelta(minutes=1)
+            modified_booked_times.append([start_time, end_time])
+    while current_time <= closing_time:
+        current_closed_time = current_time + timedelta(hours=duration)
+        range1 = TimeRange(current_time, current_closed_time)
+
+        if not range1.intersects(modified_booked_times):
+            main.append(f'{current_time.hour}:{current_time.minute}')
+
+        current_time += timedelta(minutes=15)
+
+        if current_closed_time >= closing_time:
+            break
+
+    return main
 
 
-'''x = [
-    [(datetime.datetime(2023, 8, 1, 8, 0), datetime.datetime(2023, 8, 1, 9, 0),)],
-    [(datetime.datetime(2023, 8, 1, 10, 0), datetime.datetime(2023, 8, 1, 11, 0),)],
-    [(datetime.datetime(2023, 8, 1, 13, 0), datetime.datetime(2023, 8, 1, 16, 0),)],
+x = [
+    [datetime.datetime(2023, 8, 1, 8, 0), datetime.datetime(2023, 8, 1, 9, 0)],
+    [datetime.datetime(2023, 8, 1, 9, 0), datetime.datetime(2023, 8, 1, 10, 0)],
+    [datetime.datetime(2023, 8, 1, 10, 0), datetime.datetime(2023, 8, 1, 11, 0)],
+    [datetime.datetime(2023, 8, 1, 11, 0), datetime.datetime(2023, 8, 1, 12, 0)],
+    [datetime.datetime(2023, 8, 1, 12, 0), datetime.datetime(2023, 8, 1, 13, 0)],
+    [datetime.datetime(2023, 8, 1, 13, 0), datetime.datetime(2023, 8, 1, 14, 0)],
+    [datetime.datetime(2023, 8, 1, 14, 0), datetime.datetime(2023, 8, 1, 15, 0)],
+    [datetime.datetime(2023, 8, 1, 15, 0), datetime.datetime(2023, 8, 1, 16, 0)],
+    [datetime.datetime(2023, 8, 1, 16, 0), datetime.datetime(2023, 8, 1, 17, 0)],
+
     ]
 y = 1
-time_to_visit(x, y)'''
+
+print(time_to_visit(y, x))
