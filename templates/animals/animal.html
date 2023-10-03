@@ -16,24 +16,6 @@
     <p>Description: {{ result.description }}</p>
     <p>Health: {{ result.healthy }}</p>
     <p>Sex: {{ result.sex }}</p>
-    {% if reserved_time is not False %}
-        <p>Reserved_time</p>
-        {% for time_item in reserved_time %}
-            {% for time in time_item %}
-                <p>_____ ({{ time.year }}_{{ time.month }}_{{ time.day }})      {{ time.hour }}:{{ time.minute }}</p>
-            {% endfor %}
-            ++++++++++++++++++++++
-        {% endfor %}
-        <br>
-
-    {% else %}
-    <p>No reserved time</p>
-    {% endif %}
-    <p>Reserve your time:</p>
-    <form method="post" action="/animals/animal_id={{ result.id }}/schedule">
-        {% csrf_token %}
-        <input type="number" name="val">
-        <input type="submit" name="submit">
-    </form>
+    <a href="/animals/animal_id={{ result.id }}/schedule">Reserve Time</a>
 </body>
 </html>

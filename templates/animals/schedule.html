@@ -9,7 +9,43 @@
 </head>
 <body>
     <a href="/animals/">Go to animals</a>
+    {% if reserved_time is not False %}
+        <p>Reserved_time</p>
+        {% for time_item in reserved_time %}
+        ++++++++++++++++++++++
+            {% for time in time_item %}
+                <p>Date: {{ time.year }} {{ time.month }} {{ time.day }} </p>
+                <p>Time: {{ time.hour }}:{{ time.minute }} </p>
+                <p>{{ time_item.animal_id }}</p>
+                ------------------------
+            {% endfor %}
+            <br>
+        ++++++++++++++++++++++
+        {% endfor %}
+
+        <br>
+
+    {% else %}
+    <p>No reserved time</p>
+    {% endif %}
+    <p>Reserve your time:</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="number" name="val" min="1" max="9">
+        <input type="submit" name="submit">
+    </form>
     <p>You can to reserve:</p>
-{{ res }}
+{{ schedule_data }}
+<form method="post" action="schedule/reserve">
+{% csrf_token %}
+    <label for="time">Choose time: </label>
+    <select id="time" name="time">
+        {% for r in schedule_data %}
+            <option value="{{ r }}" name="{{ r }}">{{ r }}</option>
+        {% endfor %}
+    </select>
+    <input type="hidden" value="{{ hours }}" name="hour">
+    <input type="submit" value="Submit">
+</form>
 </body>
 </html>

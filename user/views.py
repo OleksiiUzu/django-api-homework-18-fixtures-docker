@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from string import ascii_letters, digits
 
 
 # Create your views here.
@@ -26,7 +27,10 @@ def user_login(request):
             login(request, user)
             return redirect('/')
         else:
-            return redirect('/user/login')
+            # return redirect('/user/login')
+            response_text = 'fail'
+            status_code = 404
+            return HttpResponse(response_text, status=status_code)
     if request.user.is_authenticated:
         return redirect('/')
     return render(request, 'user/login.html', {})

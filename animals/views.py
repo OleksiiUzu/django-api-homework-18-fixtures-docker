@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from animals.models import Animal, Schedule
 from animals.schedule_calculations import time_to_visit
+import datetime
+from datetime import timedelta
 
 
 def taking_reserve_dates(animal_id):
@@ -28,8 +30,8 @@ def animals(request):
 
 def animal(request, animal_id):
     animal_data = Animal.objects.get(id=animal_id)
-    reserve_dates = taking_reserve_dates(animal_id)
-    return render(request, 'animals/animal.html', {'result': animal_data, 'reserved_time': reserve_dates})
+
+    return render(request, 'animals/animal.html', {'result': animal_data})
 
 
 def search(request):
@@ -40,8 +42,24 @@ def search(request):
 
 
 def schedule(request, animal_id):
+
     reserve_dates = taking_reserve_dates(animal_id)
     if request.method == 'POST':
         times = time_to_visit(int(request.POST['val'][0]), reserve_dates)
-        return render(request, 'animals/schedule.html', {'res': times})
-    return render(request, 'animals/schedule.html', {})
+        hours = int(request.POST['val'][0])
+        return render(request, 'animals/schedule.html', {'schedule_data': times, 'reserved_time': reserve_dates, 'hours': hours})
+    return render(request, 'animals/schedule.html', {'reserved_time': reserve_dates})
+
+
+def time_list(request, animal_id):
+    double_dots = request.POST['time'].index(':')
+    start = datetime.datetime(year=int(datetime.datetime.now().year),
+                              month=int(datetime.datetime.now().month),
+                              day=int(datetime.datetime.now().day),
+                              hour=int(request.POST['time'][0:double_dots]),
+                              minute=int(request.POST['time'][double_dots+1:len(request.POST['time'])]))
+    end = start + timedelta(hours=int(request.POST['hour'][0]))
+
+    Schedule.objects.create(start_time=start, end_time=end, user=request.user.id, animal_id=animal_id)
+
+    return redirect(f'/animals/animal_id={animal_id}/schedule')

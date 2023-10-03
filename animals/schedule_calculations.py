@@ -22,8 +22,16 @@ class TimeRange:
 
 
 def time_to_visit(duration, booked_times):
-    opening_time = datetime.datetime(2023, 8, 1, 8, 0)
-    closing_time = datetime.datetime(2023, 8, 1, 18, 0)
+    opening_time = datetime.datetime(year=int(datetime.datetime.now().year),
+                                     month=int(datetime.datetime.now().month),
+                                     day=int(datetime.datetime.now().day),
+                                     hour=8,
+                                     minute=0)
+    closing_time = datetime.datetime(year=int(datetime.datetime.now().year),
+                                     month=int(datetime.datetime.now().month),
+                                     day=int(datetime.datetime.now().day),
+                                     hour=18,
+                                     minute=0)
 
     main = []
     current_time = opening_time
@@ -47,20 +55,3 @@ def time_to_visit(duration, booked_times):
             break
 
     return main
-
-
-x = [
-    [datetime.datetime(2023, 8, 1, 8, 0), datetime.datetime(2023, 8, 1, 9, 0)],
-    [datetime.datetime(2023, 8, 1, 9, 0), datetime.datetime(2023, 8, 1, 10, 0)],
-    [datetime.datetime(2023, 8, 1, 10, 0), datetime.datetime(2023, 8, 1, 11, 0)],
-    [datetime.datetime(2023, 8, 1, 11, 0), datetime.datetime(2023, 8, 1, 12, 0)],
-    [datetime.datetime(2023, 8, 1, 12, 0), datetime.datetime(2023, 8, 1, 13, 0)],
-    [datetime.datetime(2023, 8, 1, 13, 0), datetime.datetime(2023, 8, 1, 14, 0)],
-    [datetime.datetime(2023, 8, 1, 14, 0), datetime.datetime(2023, 8, 1, 15, 0)],
-    [datetime.datetime(2023, 8, 1, 15, 0), datetime.datetime(2023, 8, 1, 16, 0)],
-    [datetime.datetime(2023, 8, 1, 16, 0), datetime.datetime(2023, 8, 1, 17, 0)],
-
-    ]
-y = 1
-
-print(time_to_visit(y, x))

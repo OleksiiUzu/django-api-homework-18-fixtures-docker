@@ -16,21 +16,23 @@ def blog_post(request, post_id):
 
 def feedback(request):
     if request.method == 'POST':
-        data = request.POST
-        print(data)
-        '''new_feedback = blog.models.Feedback(title=data['title'],
-                                            text=data['Text'],
-                                            media=data['media'],
-                                            user=request.user,
-                                            animal_id=int(data['animal_type']))
+
+        # print(data)
+        '''new_feedback = blog.models.Feedback( title=data['title'],
+                                                text=data['Text'],
+                                                media=data['media'],
+                                                user=request.user,
+                                                animal_id=int(data['animal_type']))
         new_feedback.save()'''
         form = blog.forms.FeedbackForm(request.POST)
         feedback_data = form.save(commit=False)
-        animal = animals.models.Animal.objects.get(id=int(data['animal_type']))
-        feedback_data.user = request.user
-        feedback_data.animal = animal
-        feedback_data.save()
-        return redirect('/blog/feedback')
+        data = request.POST
+        if data:
+            animal = animals.models.Animal.objects.get(id=int(data['animal_type']))
+            feedback_data.user = request.user
+            feedback_data.animal = animal
+            feedback_data.save()
+            return redirect('/blog/feedback')
     all_feedback = blog.models.Feedback.objects.all()
     all_animals_data = animals.models.Animal.objects.all()
     animals_type = [i.animal_type for i in all_animals_data]
