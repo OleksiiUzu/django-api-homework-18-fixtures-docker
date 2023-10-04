@@ -4,14 +4,15 @@ from django.test import Client
 
 
 class FirstTest(TestCase):
+    fixtures = ['all_data.json']
+
     def test_user_login(self):
         user_client = Client()
         response = user_client.post('/user/login', {'username': 'somName', 'password': 'somePassword'})
         status_code = response.status_code
         self.assertEqual(status_code, 404)
 
-        User.objects.create_user(username="test", password="test")
-        response = user_client.post('/user/login', {"username": "test", "password": "test"})
+        response = user_client.post('/user/login', {"username": "ggg", "password": "ggg"})
         status_code = response.status_code
         self.assertEqual(status_code, 302)
         self.assertTrue('Location' in response)
