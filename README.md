@@ -6,6 +6,9 @@ I will make web-site that calls pet-shelter. Tha main idea for this site is to a
 The platform enables potential adopters to browse available pets and book appointments to meet them in person.
 
 Main task in this repo is to add fixtures to the apps test.py and implement Docker.
+Fixtures in Django are used to preload database data for testing and initialization. 
+Export data with dumpdata, import with loaddata, and use them in tests via the fixtures attribute. 
+Formats: JSON, XML, YAML.
 
 Added some functional to the apps, like:
 - Adedd fixtures to the apps test.py
