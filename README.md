@@ -1,7 +1,7 @@
 # Django - creating API - Fixtures 
 
 ## About
-This repository is my fifteenth homework assignment from the Python Pro course. This is my first introduction to the Django framework.
+This repository is my eighteenth homework assignment from the Python Pro course. This is my first introduction to the Django framework.
 I will make web-site that calls pet-shelter. Tha main idea for this site is to allow users to schedule visits with animals in a shelter. 
 The platform enables potential adopters to browse available pets and book appointments to meet them in person.
 
